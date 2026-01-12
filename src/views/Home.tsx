@@ -1,7 +1,9 @@
+import { Button } from '@/components/ui/button';
+
 const Home = () => {
   return (
     <>
-      <h1>Home</h1>
+      <h1 className="text-center p-4 text-lg">Home</h1>
       <section>
         <p>Number of faces in database: X</p>
         <p>Number of votes in database: Y</p>
@@ -15,8 +17,8 @@ const Home = () => {
       </section>
       <section>
         <h3>Actions</h3>
-        <button>Start Voting</button>
-        <button>Reset Database</button>
+        <Button>Start Voting</Button>
+        <Button>Reset Database</Button>
       </section>
     </>
   );
