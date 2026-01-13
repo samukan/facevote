@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { NavLink } from 'react-router';
 
 const Home = () => {
   return (
@@ -17,7 +18,9 @@ const Home = () => {
       </section>
       <section>
         <h3>Actions</h3>
-        <Button>Start Voting</Button>
+        <NavLink to={'/face'}>
+          <Button>Start Voting</Button>
+        </NavLink>
         <Button>Reset Database</Button>
       </section>
     </>
