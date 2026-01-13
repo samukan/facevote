@@ -35,7 +35,7 @@ const DetectFace = () => {
       }
 
       // Schedule the next detection
-      timer = setTimeout(detectFace, 1000);
+      timer = setTimeout(detectFace, 10);
     };
 
     // Initialize the video feed and start detection
