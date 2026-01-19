@@ -10,7 +10,7 @@ type Vote = {
 type DBState = {
   db: Loki | null;
   facesCollection: Collection<Float32Array> | null;
-  votesColletion: Collection<Vote> | null;
+  votesCollection: Collection<Vote> | null;
   isReady: boolean;
   faces: (Float32Array & LokiObj)[];
   votes: (Vote & LokiObj)[];

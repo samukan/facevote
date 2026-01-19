@@ -11,10 +11,10 @@ type DBStore = DBState & {
   getAllVotes: () => (Vote & LokiObj)[];
 };
 
-const useStore = create<DBStore>((get, set) => ({
+const useStore = create<DBStore>((set, get) => ({
   db: null,
   facesCollection: null,
-  votesColletion: null,
+  votesCollection: null,
   isReady: false,
   faces: [],
   votes: [],
@@ -55,7 +55,7 @@ const useStore = create<DBStore>((get, set) => ({
   },
   addVotes: (vote) => {
     const result = get().votesCollection?.insert(vote);
-    set({ faces: get().votesCollection?.find() || [] });
+    set({ votes: get().votesCollection?.find() || [] });
     return result;
   },
   getAllVotes: () => get().votes,
