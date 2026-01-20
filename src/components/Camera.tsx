@@ -32,7 +32,14 @@ const Camera = forwardRef<HTMLVideoElement, CameraProps>((props, ref) => {
     setupVideoInput();
   }, []);
 
-  return <video ref={videoRef} width={width} height={height}></video>;
+  return (
+    <video
+      ref={videoRef}
+      width={width}
+      height={height}
+      className="rounded-2xl bg-black shadow-lg ring-1 ring-border"
+    ></video>
+  );
 });
 
 export default Camera;
