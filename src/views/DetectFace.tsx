@@ -1,16 +1,27 @@
 import Camera from '@/components/Camera';
 import { useFaceDetection } from '@/hooks/FaceHooks';
+import { useStore } from '@/stores/DBStore';
 import { useEffect, useRef } from 'react';
 
 const DetectFace = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { detection, getDescriptors } = useFaceDetection();
+  const { detectionResult, getDescriptors } = useFaceDetection();
+  const { faces, addFaces, getAllFaces } = useStore();
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null;
     const detectFace = async () => {
       try {
-        await getDescriptors(videoRef); // Start detecting faces
+        const result = await getDescriptors(videoRef); // Start detecting faces
+
+        // faces to DB
+        if (result) {
+          console.log('jaahs', result, faces.length);
+          console.log('testi', getAllFaces());
+          if (faces.length === 0) {
+            addFaces(result.descriptor);
+          }
+        }
 
         timer = setTimeout(detectFace, 100); // Schedule the next detection
       } catch (error) {}
@@ -47,19 +58,19 @@ const DetectFace = () => {
     };
   }, []);
 
-  console.log('descriptors', detection);
+  console.log('descriptors', detectionResult);
 
   return (
     <div>
       <Camera ref={videoRef} width={800} height={480} />
-      {detection && (
+      {detectionResult?.detection && (
         <div
           style={{
             position: 'absolute',
-            top: detection.box.y,
-            left: detection.box.x,
-            width: detection.box.width,
-            height: detection.box.height,
+            top: detectionResult.detection.box.y,
+            left: detectionResult.detection.box.x,
+            width: detectionResult.detection.box.width,
+            height: detectionResult.detection.box.height,
             border: '2px solid red',
             pointerEvents: 'none',
           }}

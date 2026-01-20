@@ -1,10 +1,18 @@
 import { RefObject, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
 
+type DetectionResult = faceapi.WithFaceDescriptor<
+  faceapi.WithFaceLandmarks<
+    {
+      detection: faceapi.FaceDetection;
+    },
+    faceapi.FaceLandmarks68
+  >
+>;
+
 const useFaceDetection = () => {
-  const [detection, setDetection] = useState<faceapi.FaceDetection | null>(
-    null,
-  );
+  const [detectionResult, setDetectionResult] =
+    useState<DetectionResult | null>(null);
 
   // Detect face from video frames
   const getDescriptors = async (videoRef: RefObject<HTMLVideoElement>) => {
@@ -28,7 +36,9 @@ const useFaceDetection = () => {
 
         console.log('result', result);
 
-        setDetection(result.detection); // Update detection state
+        setDetectionResult(result); // Update detection state
+
+        return result;
       } catch (error) {
         console.error(error);
       }
@@ -51,7 +61,7 @@ const useFaceDetection = () => {
     loadModels();
   }, []);
 
-  return { detection, getDescriptors };
+  return { detectionResult, getDescriptors };
 };
 
 export { useFaceDetection };
