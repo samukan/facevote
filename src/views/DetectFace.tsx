@@ -8,7 +8,7 @@ const DetectFace: React.FC = () => {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const { detectionResult, getDescriptors, matchFace } = useFaceDetection();
-  const { faces, addFaces, getAllFaces } = useStore();
+  const { faces } = useStore();
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null;
@@ -20,19 +20,26 @@ const DetectFace: React.FC = () => {
 
         // faces to DB
         if (labeledFace) {
+          // 1. naama
           if (faces.length === 0) {
-            navigate('/detected', {
-              state: { descriptors: [labeledFace.toJSON()] },
-            });
+            navigate('/detected', { state: labeledFace.toJSON() });
+            return;
           }
+
+          // löytyykö naamaa jo kannasta
           const match = await matchFace(labeledFace.descriptors[0], faces);
-          console.log('match', match);
+          console.log('mätsi', match);
+
+          const THRESHOLD = 0.4;
+          if (match && match.distance > THRESHOLD) {
+            // uusi naama
+            navigate('/detected', { state: labeledFace.toJSON() });
+            return;
+          }
         }
 
         timer = setTimeout(detectFace, 100); // Schedule the next detection
-      } catch (error) {
-        console.error('Error during face detection:', error);
-      }
+      } catch (error) {}
     };
 
     // Initialize the video feed and start detection
@@ -66,8 +73,10 @@ const DetectFace: React.FC = () => {
     };
   }, []);
 
+  console.log('descriptors', detectionResult);
+
   return (
-    <div className="relative">
+    <div>
       <Camera ref={videoRef} width={800} height={480} />
       {detectionResult?.detection && (
         <div
@@ -77,10 +86,7 @@ const DetectFace: React.FC = () => {
             left: detectionResult.detection.box.x,
             width: detectionResult.detection.box.width,
             height: detectionResult.detection.box.height,
-            border: '2px solid #ef4444',
-            borderRadius: 12,
-            boxShadow:
-              '0 0 0 2px rgba(239, 68, 68, 0.25), 0 10px 30px rgba(0, 0, 0, 0.35)',
+            border: '2px solid red',
             pointerEvents: 'none',
           }}
         ></div>

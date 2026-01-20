@@ -1,0 +1,22 @@
+diff --git a/node_modules/face-api.js/tsconfig.json b/node_modules/face-api.js/tsconfig.json
+index 6e4f688..0c51fe9 100644
+--- a/node_modules/face-api.js/tsconfig.json
++++ b/node_modules/face-api.js/tsconfig.json
+@@ -15,7 +15,6 @@
+     "noImplicitReturns": true,
+     "noImplicitThis": true,
+     "noFallthroughCasesInSwitch": true,
+-    "suppressImplicitAnyIndexErrors": true,
+     "strictNullChecks": true,
+     "importHelpers": true,
+     "skipLibCheck": true,
+@@ -38,6 +37,7 @@
+     "dist"
+   ],
+   "include": [
+-    "src"
++    "build/commonjs/**/*.d.ts",
++    "build/es6/**/*.d.ts"
+   ]
+ }
+\ No newline at end of file
