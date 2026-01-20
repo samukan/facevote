@@ -1,9 +1,9 @@
 import Camera from '@/components/Camera';
 import { useFaceDetection } from '@/hooks/FaceHooks';
 import { useStore } from '@/stores/DBStore';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const DetectFace = () => {
+const DetectFace: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { detectionResult, getDescriptors } = useFaceDetection();
   const { faces, addFaces, getAllFaces } = useStore();
@@ -12,7 +12,9 @@ const DetectFace = () => {
     let timer: ReturnType<typeof setTimeout> | null = null;
     const detectFace = async () => {
       try {
-        const result = await getDescriptors(videoRef); // Start detecting faces
+        const result = await getDescriptors(
+          videoRef as React.RefObject<HTMLVideoElement>,
+        ); // Start detecting faces
 
         // faces to DB
         if (result) {
